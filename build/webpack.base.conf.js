@@ -1,5 +1,4 @@
 const path = require('path');
-const autoprefixer = require('autoprefixer');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 const HTMLPlugin = new HtmlWebPackPlugin({
@@ -32,7 +31,8 @@ module.exports = {
                                     regenerator: true,
                                     moduleName: 'babel-runtime'
                                 }
-                            ]
+                            ],
+                            'react-hot-loader/babel'
                         ]
                     }
                 }
