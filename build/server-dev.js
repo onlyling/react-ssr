@@ -1,11 +1,12 @@
 const WebpackDevServer = require('webpack-dev-server');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.dev.conf');
+const conf = require('../package.json');
 
 let compiler = webpack(webpackConfig);
 const devServerOptions = {
-    port: 9091,
-    host: '127.0.0.1',
+    port: conf.port,
+    host: 'localhost',
     overlay: true,
     stats: 'errors-only',
     compress: true,

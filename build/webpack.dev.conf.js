@@ -2,13 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
+const conf = require('../package.json');
 
 module.exports = merge(baseWebpackConfig, {
     mode: 'development',
     entry: {
         app: [
             'react-hot-loader/patch',
-            'webpack-dev-server/client?http://localhost:9091',
+            `webpack-dev-server/client?http://localhost:${conf.port}`,
             'webpack/hot/only-dev-server',
             path.join(__dirname, '../src/entry-client.js')
         ]

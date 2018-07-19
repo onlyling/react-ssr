@@ -23,6 +23,9 @@ module.exports = {
                     options: {
                         presets: ['react', 'env'],
                         plugins: [
+                            ['import', { libraryName: 'antd', style: true }],
+                            ['transform-decorators-legacy'],
+                            ['syntax-dynamic-import'],
                             [
                                 'transform-runtime',
                                 {
