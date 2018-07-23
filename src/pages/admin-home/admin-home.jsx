@@ -7,7 +7,7 @@ import React from 'react';
 // )
 class Node extends React.Component {
     render() {
-        return <div style={{ height: '4000px' }}>list</div>;
+        return <div style={{ height: '4000px' }}>admin-home</div>;
     }
 }
 

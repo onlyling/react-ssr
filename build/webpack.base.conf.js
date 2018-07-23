@@ -23,7 +23,13 @@ module.exports = {
                     options: {
                         presets: ['react', 'env'],
                         plugins: [
-                            ['import', { libraryName: 'antd', style: true }],
+                            [
+                                'import',
+                                {
+                                    libraryName: 'antd',
+                                    style: true
+                                }
+                            ],
                             ['transform-decorators-legacy'],
                             ['syntax-dynamic-import'],
                             [
@@ -73,7 +79,11 @@ module.exports = {
                     },
 
                     {
-                        loader: 'less-loader'
+                        loader: 'less-loader',
+                        options: {
+                            javascriptEnabled: true,
+                            modifyVars: { '@primary-color': '#1DA57A' }
+                        }
                     }
                 ]
             },

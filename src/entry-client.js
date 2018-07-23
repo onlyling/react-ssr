@@ -8,9 +8,11 @@ ReactDOM.render(
         <div>
             <Link to="/home">home</Link>
             &emsp;
-            <Link to="/list">list</Link>
+            <Link to="/list/index">list</Link>
             &emsp;
             <Link to="/error">404</Link>
+            &emsp;
+            <Link to="/admin/home">admin-home</Link>
             <App />
         </div>
     </Router>,

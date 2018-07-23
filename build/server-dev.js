@@ -6,6 +6,7 @@ const conf = require('../package.json');
 let compiler = webpack(webpackConfig);
 const devServerOptions = {
     port: conf.port,
+    proxy: conf.proxy,
     host: 'localhost',
     overlay: true,
     stats: 'errors-only',
@@ -14,7 +15,8 @@ const devServerOptions = {
     hot: true,
     inline: true,
     progress: true,
-    open: true
+    open: true,
+    publicPath: '/'
 };
 
 WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerOptions);

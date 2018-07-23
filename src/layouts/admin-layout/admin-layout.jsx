@@ -9,7 +9,7 @@ class Node extends React.Component {
             <Layout>
                 <Sider>323</Sider>
                 <Layout style={{ marginLeft: 200, marginTop: 50 }}>
-                    <Content>{this.props.children}</Content>
+                    <Content>1213{this.props.children}</Content>
                 </Layout>
             </Layout>
         );
