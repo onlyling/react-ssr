@@ -56,7 +56,7 @@
     "port": 9091,
     "proxy": {
         "/api/": {
-            "target": "https://other-server.example.com"
+            "target": "http://127.0.0.1:3333"
         }
     }
 }

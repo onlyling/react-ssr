@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, Link } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
 import LoadingComponent from './components/page-loading/page-loading';
@@ -25,6 +25,11 @@ const AdminHome = Loadable({
     loading: LoadingComponent
 });
 
+const AdminList= Loadable({
+    loader: () => import('./pages/admin-list/admin-list'),
+    loading: LoadingComponent
+});
+
 export default () => {
     return (
         <Switch>
@@ -36,10 +41,16 @@ export default () => {
             {/* <Route path="/admin" component={AdminLayout} /> */}
 
             <Route
-                path="/"
+                path="/admin"
                 render={() => {
                     return <AdminLayout>
+                        <div>
+                            <Link to="/admin/home">admin-home</Link>
+                            &emsp;
+                            <Link to="/admin/list">admin-list</Link>
+                        </div>
                         <Route path="/admin/home" component={AdminHome} />
+                        <Route path="/admin/list" component={AdminList} />
                     </AdminLayout>;
                 }}
             />
