@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
     })
 )
 class Node extends React.Component {
-    componentDidMount() {
+    componentDidMount = () => {
         this.props.GetCheck();
     }
 

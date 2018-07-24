@@ -21,7 +21,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['react', 'env'],
+                        presets: ['react', 'env', 'stage-2'],
                         plugins: [
                             [
                                 'import',
@@ -57,6 +57,34 @@ module.exports = {
             },
             {
                 test: /\.less$/,
+                exclude: [/src/],
+                use: [
+                    {
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [
+                                require('autoprefixer')('last 100 versions')
+                            ]
+                        }
+                    },
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            javascriptEnabled: true,
+                            modifyVars: { '@primary-color': '#1DA57A' }
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.less$/,
+                exclude: [/node_modules/],
                 use: [
                     {
                         loader: 'style-loader'
@@ -77,12 +105,11 @@ module.exports = {
                             ]
                         }
                     },
-
                     {
                         loader: 'less-loader',
                         options: {
-                            javascriptEnabled: true,
-                            modifyVars: { '@primary-color': '#1DA57A' }
+                            // javascriptEnabled: true,
+                            // modifyVars: { '@primary-color': '#1DA57A' }
                         }
                     }
                 ]

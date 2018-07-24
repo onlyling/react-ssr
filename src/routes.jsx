@@ -15,6 +15,11 @@ const IndexList = Loadable({
     loading: LoadingComponent
 });
 
+const IndexLogin = Loadable({
+    loader: () => import('./pages/index-login/index-login'),
+    loading: LoadingComponent
+});
+
 const Index404 = Loadable({
     loader: () => import('./pages/index-404/index-404'),
     loading: LoadingComponent
@@ -35,6 +40,8 @@ export default () => {
         <Switch>
             <Route exact path="/home" component={IndexHome} />
             <Route exact path="/list/index" component={IndexList} />
+
+            <Route exact path="/login" component={IndexLogin} />
 
             <Redirect exact from="/" to="/home" />
 

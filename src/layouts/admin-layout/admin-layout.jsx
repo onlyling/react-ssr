@@ -1,18 +1,32 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 
 const { Sider, Content } = Layout;
 
+@connect(
+    ({ User }) => ({
+        UserInfo: User.get('UserInfo')
+    }),
+    () => ({})
+)
 class Node extends React.Component {
     render() {
-        return (
-            <Layout>
-                <Sider>323</Sider>
-                <Layout style={{ marginLeft: 200, marginTop: 50 }}>
-                    <Content>1213{this.props.children}</Content>
+        let { UserInfo } = this.props;
+
+        if (UserInfo.get('user_name')) {
+            return (
+                <Layout>
+                    <Sider>Sider</Sider>
+                    <Layout style={{ marginLeft: 200, marginTop: 50 }}>
+                        <Content>{this.props.children}</Content>
+                    </Layout>
                 </Layout>
-            </Layout>
-        );
+            );
+        } else {
+            return <Redirect to="/login" />;
+        }
     }
 }
 
