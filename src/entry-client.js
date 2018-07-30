@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { init } from '@rematch/core';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import { LocaleProvider } from 'antd';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
 import 'moment/locale/zh-cn';

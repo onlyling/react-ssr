@@ -16,37 +16,6 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['react', 'env', 'stage-2'],
-                        plugins: [
-                            [
-                                'import',
-                                {
-                                    libraryName: 'antd',
-                                    style: true
-                                }
-                            ],
-                            ['transform-decorators-legacy'],
-                            ['syntax-dynamic-import'],
-                            [
-                                'transform-runtime',
-                                {
-                                    helpers: false,
-                                    polyfill: false,
-                                    regenerator: true,
-                                    moduleName: 'babel-runtime'
-                                }
-                            ],
-                            'react-hot-loader/babel'
-                        ]
-                    }
-                }
-            },
-            {
                 test: /\.html$/,
                 use: [
                     {
