@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const ora = require('ora');
-// const WebpackAssetsManifest = require('webpack-assets-manifest');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -115,7 +115,7 @@ webpack(
             new MiniCssExtractPlugin({
                 filename: 'css/app.[hash].css'
             }),
-            // new WebpackAssetsManifest(),
+            new WebpackAssetsManifest(),
             new ReactLoadablePlugin({
                 filename: Dir('/react-loadable.json')
             }),

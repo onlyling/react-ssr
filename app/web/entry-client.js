@@ -38,7 +38,7 @@ class Node extends React.Component {
     }
 }
 
-ReactDOM.render(<Node />, document.getElementById('root'));
+ReactDOM.hydrate(<Node />, document.getElementById('root'));
 
 if (module.hot) {
     module.hot.accept();

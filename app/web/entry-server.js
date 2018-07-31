@@ -26,7 +26,9 @@ class SSR {
 
         return {
             html,
-            scripts: this.generateBundleScripts(bundles)
+            scripts: this.generateBundleScripts(bundles),
+            getBundles,
+            modules
         };
     }
 
@@ -37,7 +39,7 @@ class SSR {
                 return (bundle || {}).file.endsWith('.js');
             })
             .map((bundle) => {
-                return `<script type="text/javascript" src="/public/static/js${
+                return `<script type="text/javascript" src="${
                     bundle.publicPath
                 }"></script>\n`;
             });

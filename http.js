@@ -1,9 +1,13 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 
 const SSR = require('./app/ssr/app');
 const stats = require('./app/public/static/react-loadable.json');
+const HTML_INDEX = fs
+    .readFileSync(path.join(__dirname, 'app/public/static/index.html'))
+    .toString();
 //实例化一个SSR对象
 const s = new SSR();
 
@@ -15,21 +19,10 @@ app.use('/public', express.static(path.join(__dirname, 'app/public')));
 app.get('*', (req, res) => {
     //根据路由，渲染不同的页面组件
     const rendered = s.render(req.originalUrl, stats);
-
-    const html = `
-    <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-      </head>
-      <body>
-        <div id="app">${rendered.html}</div>
-        ${rendered.scripts.join()}
-        <script type="text/javascript" src="/public/ssr.js"></script>
-      </body>
-    </html>
-  `;
-
+    const extra = `<div id="app">${
+        rendered.html
+    }</div>${rendered.scripts.join()}`;
+    const html = HTML_INDEX.replace('<div id=root></div>', extra);
     res.send(html);
 });
 
