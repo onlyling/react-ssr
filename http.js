@@ -2,18 +2,19 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-const SSR = require('./ssr/ssr');
+const SSR = require('./app/ssr/app');
+const stats = require('./app/public/static/react-loadable.json');
 //实例化一个SSR对象
 const s = new SSR();
 
 //preload all components on server side, 服务端没有动态加载各个组件，提前先加载好
 SSR.preloadAll();
 
-app.use('/public', express.static(path.join(__dirname, 'ssr')));
+app.use('/public', express.static(path.join(__dirname, 'app/public')));
 
 app.get('*', (req, res) => {
     //根据路由，渲染不同的页面组件
-    const rendered = s.render(req.originalUrl);
+    const rendered = s.render(req.originalUrl, stats);
 
     const html = `
     <!DOCTYPE html>

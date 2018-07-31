@@ -1,29 +1,31 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const baseWebpackConfig = require('./webpack.base.conf');
 const ReactLoadablePlugin = require('react-loadable/webpack')
     .ReactLoadablePlugin;
-// const nodeExternals = require('webpack-node-externals');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ora = require('ora');
 
-const spinner = ora('building for SSR...');
+const baseWebpackConfig = require('./webpack.base.conf');
+
+const spinner = ora('building for SSR...\n');
 spinner.start();
 
-const SSRDir = (p = '') => {
-    return path.join(__dirname, `../ssr${p}`);
+const Dir = (p = '') => {
+    return path.join(__dirname, `../app/ssr${p}`);
 };
 
 webpack(
     merge(baseWebpackConfig, {
         mode: 'production',
         entry: {
-            app: path.join(__dirname, '../src/entry-server.js')
+            app: path.join(__dirname, '../app/web/entry-server.js')
         },
         output: {
-            path: SSRDir(),
+            path: Dir(),
             publicPath: '/public',
-            filename: 'ssr.js',
+            filename: '[name].js',
+            chunkFilename: '[name].js',
             libraryExport: 'default',
             libraryTarget: 'commonjs2'
         },
@@ -67,8 +69,12 @@ webpack(
             ]
         },
         plugins: [
+            new CleanWebpackPlugin(['./*.js'], {
+                root: Dir(),
+                verbose: true
+            }),
             new ReactLoadablePlugin({
-                filename: SSRDir('/react-loadable.json')
+                filename: Dir('/react-loadable.json')
             })
         ]
     }),

@@ -1,6 +1,8 @@
 import React from 'react';
 // import { connect } from 'react-redux';
 
+import Styles from './index-home.less';
+
 // @connect(
 //     () => ({}),
 //     ({ User }) => ({
@@ -9,11 +11,11 @@ import React from 'react';
 // )
 class Node extends React.Component {
     componentDidMount = () => {
-        this.props.GetCheck();
+        // this.props.GetCheck();
     }
 
     render() {
-        return <div style={{ height: '4000px' }}>index-home</div>;
+        return <div className={Styles['page']}>index-home</div>;
     }
 }
 
