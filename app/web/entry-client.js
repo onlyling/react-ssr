@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { init } from '@rematch/core';
 import { Provider } from 'react-redux';
 import { LocaleProvider } from 'antd';
+import Loadable from 'react-loadable';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
 import 'moment/locale/zh-cn';
 
-import ScrollToTop from './components/scroll-to-top/scroll-to-top';
-import Routes from './routes';
+import App from './app';
 import * as models from './models';
 
 let store = init({
@@ -21,16 +21,7 @@ class Node extends React.Component {
             <Router>
                 <LocaleProvider locale={zh_CN}>
                     <Provider store={store}>
-                        <ScrollToTop>
-                            <Link to="/home">home</Link>
-                            &emsp;
-                            <Link to="/list/index">list</Link>
-                            &emsp;
-                            <Link to="/error">404</Link>
-                            &emsp;
-                            <Link to="/admin/home">admin-home</Link>
-                            <Routes />
-                        </ScrollToTop>
+                        <App />
                     </Provider>
                 </LocaleProvider>
             </Router>
@@ -38,7 +29,9 @@ class Node extends React.Component {
     }
 }
 
-ReactDOM.hydrate(<Node />, document.getElementById('root'));
+Loadable.preloadReady().then(() => {
+    ReactDOM.hydrate(<Node />, document.getElementById('root'));
+});
 
 if (module.hot) {
     module.hot.accept();
