@@ -17,31 +17,16 @@ const s = new SSR();
 app.use('/public', express.static(path.join(__dirname, 'app/public')));
 
 app.get('*', (req, res) => {
+    let HTML_INDEX = fs
+        .readFileSync(path.join(__dirname, 'app/public/static/index.html'))
+        .toString();
+    //根据路由，渲染不同的页面组件
     const rendered = s.render(req.originalUrl, stats);
-
-    const html = `
-        <!DOCTYPE html>
-        <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-            </head>
-            <body>
-                <div id="app">${rendered.html}</div>
-            </body>
-        </html>
-        `;
+    const extra = `<div id="root">${
+        rendered.html
+    }</div>${rendered.scripts.join()}`;
+    const html = HTML_INDEX.replace('<div id=root></div>', extra);
     res.send(html);
-
-    // let HTML_INDEX = fs
-    //     .readFileSync(path.join(__dirname, 'app/public/static/index.html'))
-    //     .toString();
-    // //根据路由，渲染不同的页面组件
-    // const rendered = s.render(req.originalUrl, stats);
-    // const extra = `<div id="app">${
-    //     rendered.html
-    // }</div>${rendered.scripts.join()}`;
-    // const html = HTML_INDEX.replace('<div id=root></div>', extra);
-    // res.send(html);
 });
 
 app.listen(3000, () => {

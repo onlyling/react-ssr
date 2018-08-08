@@ -11,3 +11,4 @@ webpack 中 output 的 publicPath 需与 webpack-dev-server 的 publicPath 一�
 antd 与 css-module 冲突了，写了两个解析规则，互相屏蔽才搞定，试图寻找更优雅的方式。
 
 `css module` 在 SSR 的时候会引起 `window is not defined` 的问题，暂时发现[Server Side Rendering with CSS Modules](https://medium.com/@mattvagni/server-side-rendering-with-css-modules-6b02f1238eb1)有解决的方案。
+> `window is not defined` 并不是 `css module` 的错，而是样式在打包的是没有提取出来，在代码中动态插入，导致报错。通过 `isomorphic-style-loader` 插件已经可以规避样式的问题了。

@@ -33,7 +33,7 @@ class SSR {
             .filter((bundle) => bundle.file.endsWith('.js'))
             .map((bundle) => {
                 return `<script type="text/javascript" src="${
-                    bundle.file
+                    bundle.publicPath
                 }"></script>\n`;
             });
     }

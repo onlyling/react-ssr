@@ -8,6 +8,60 @@ const HTMLPlugin = new HtmlWebPackPlugin({
 });
 
 const devMode = process.env.NODE_ENV !== 'production';
+const ssrMode = process.env.NODE_ENV === 'ssr';
+
+// const getLessLoader = (modules) => {
+//     let module = {
+//         importLoaders: 3
+//     };
+//     if (modules) {
+//         module.modules = true;
+//         module.localIdentName = '[name]_[local]_[hash:base64:5]';
+//     }
+
+// }
+
+const getLessLoader = (modules) => {
+    let module = {
+        importLoaders: 3
+    };
+    if (modules) {
+        module.modules = true;
+        module.localIdentName = '[name]_[local]_[hash:base64:5]';
+    }
+    let loaders = [
+        {
+            loader: 'css-loader',
+            options: module
+        },
+        {
+            loader: 'postcss-loader',
+            options: {
+                plugins: [require('autoprefixer')('last 100 versions')]
+            }
+        },
+        {
+            loader: 'resolve-url-loader'
+        },
+        {
+            loader: 'less-loader',
+            options: {
+                javascriptEnabled: true,
+                modifyVars: { '@primary-color': '#1DA57A' }
+            }
+        }
+    ];
+
+    if (ssrMode) {
+        loaders.unshift('isomorphic-style-loader');
+    } else {
+        loaders.unshift(devMode ? 'style-loader' : MiniCssExtractPlugin.loader);
+    }
+
+    return loaders;
+};
+
+const plugins = ssrMode ? [] : [HTMLPlugin];
 
 module.exports = {
     entry: {
@@ -30,66 +84,12 @@ module.exports = {
             {
                 test: /\.less$/,
                 exclude: [/app\/web/],
-                use: [
-                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 3
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: [
-                                require('autoprefixer')('last 100 versions')
-                            ]
-                        }
-                    },
-                    {
-                        loader: 'resolve-url-loader'
-                    },
-                    {
-                        loader: 'less-loader',
-                        options: {
-                            javascriptEnabled: true,
-                            modifyVars: { '@primary-color': '#1DA57A' }
-                        }
-                    }
-                ]
+                use: getLessLoader(false)
             },
             {
                 test: /\.less$/,
                 exclude: [/node_modules/],
-                use: [
-                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true,
-                            localIdentName: '[name]_[local]_[hash:base64:5]',
-                            importLoaders: 3
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: [
-                                require('autoprefixer')('last 100 versions')
-                            ]
-                        }
-                    },
-                    {
-                        loader: 'resolve-url-loader'
-                    },
-                    {
-                        loader: 'less-loader',
-                        options: {
-                            // javascriptEnabled: true,
-                            // modifyVars: { '@primary-color': '#1DA57A' }
-                        }
-                    }
-                ]
+                use: getLessLoader(true)
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -104,5 +104,5 @@ module.exports = {
             }
         ]
     },
-    plugins: [HTMLPlugin]
+    plugins: plugins
 };

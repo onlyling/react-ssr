@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "fe-dev": "node build/server-dev.js",
         "build": "cross-env NODE_ENV=production node build/webpack.build.conf.js",
-        "ssr": "node build/webpack.ssr.conf.js",
+        "ssr": "cross-env NODE_ENV=ssr node build/webpack.ssr.conf.js",
         "http": "node http.js"
     },
     "repository": {
@@ -37,6 +37,7 @@
         "css-loader": "^1.0.0",
         "html-loader": "^0.5.5",
         "html-webpack-plugin": "^3.2.0",
+        "isomorphic-style-loader": "^4.0.0",
         "less": "^3.7.1",
         "less-loader": "^4.1.0",
         "mini-css-extract-plugin": "^0.4.1",
