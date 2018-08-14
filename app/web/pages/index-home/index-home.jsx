@@ -1,17 +1,17 @@
 import React from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 import Styles from './index-home.less';
 
-// @connect(
-//     () => ({}),
-//     ({ User }) => ({
-//         GetCheck: User.GetCheck
-//     })
-// )
+@connect(
+    () => ({}),
+    ({ User }) => ({
+        GetCheck: User.GetCheck
+    })
+)
 class Node extends React.Component {
     componentDidMount = () => {
-        // this.props.GetCheck();
+        this.props.GetCheck();
     }
 
     render() {

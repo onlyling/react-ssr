@@ -1,5 +1,4 @@
 import { Map } from 'immutable';
-import { Axios } from '../utils';
 
 export default {
     state: Map({
@@ -13,7 +12,7 @@ export default {
     effects: {
         // 检查当前用户是否登录
         async GetCheck(params, rootState) {
-            let data = await Axios.get('/login/check');
+            let data = await rootState.Axios.get('/login/check');
             if (data.success) {
                 this.UpdateUserInfo(rootState.User.get('UserInfo'));
             } else {
@@ -22,7 +21,7 @@ export default {
         },
         // 用户登录
         async PostLogin(params, rootState) {
-            let data = await Axios.post('/login', params);
+            let data = await rootState.Axios.post('/login', params);
             if (data.success) {
                 this.UpdateUserInfo(Map(data.data));
             }
