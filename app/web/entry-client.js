@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { init } from '@rematch/core';
 import { Provider } from 'react-redux';
 import { LocaleProvider } from 'antd';

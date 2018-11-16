@@ -7,7 +7,7 @@ let compiler = webpack(webpackConfig);
 const devServerOptions = {
     port: conf.port,
     proxy: conf.proxy,
-    host: 'localhost',
+    host: '0.0.0.0', // '0.0.0.0' 可以通过局域网访问
     overlay: true,
     stats: 'errors-only',
     compress: true,
@@ -24,9 +24,5 @@ WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerOptions);
 const server = new WebpackDevServer(compiler, devServerOptions);
 
 server.listen(devServerOptions.port, devServerOptions.host, () => {
-    console.log(
-        `Starting server on http://${devServerOptions.host}:${
-            devServerOptions.port
-        }`
-    );
+    console.log(`Starting server on http://${devServerOptions.host}:${devServerOptions.port}`);
 });

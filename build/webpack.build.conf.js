@@ -30,58 +30,6 @@ webpack(
             filename: 'js/[name].[hash].js',
             chunkFilename: 'js/[name].[chunkhash].js'
         },
-        module: {
-            rules: [
-                {
-                    test: /\.jsx?$/,
-                    exclude: /node_modules/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                'react',
-                                [
-                                    'env',
-                                    {
-                                        modules: false,
-                                        useBuiltIns: true,
-                                        targets: {
-                                            browsers: [
-                                                '> 1%',
-                                                'last 2 versions',
-                                                'Firefox ESR'
-                                            ]
-                                        }
-                                    }
-                                ],
-                                'stage-2'
-                            ],
-                            plugins: [
-                                [
-                                    'import',
-                                    {
-                                        libraryName: 'antd',
-                                        style: true
-                                    }
-                                ],
-                                ['react-loadable/babel'],
-                                ['transform-decorators-legacy'],
-                                ['syntax-dynamic-import'],
-                                [
-                                    'transform-runtime',
-                                    {
-                                        helpers: false,
-                                        polyfill: false,
-                                        regenerator: true,
-                                        moduleName: 'babel-runtime'
-                                    }
-                                ]
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
         optimization: {
             splitChunks: {
                 cacheGroups: {

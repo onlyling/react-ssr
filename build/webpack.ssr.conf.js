@@ -1,8 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const ReactLoadablePlugin = require('react-loadable/webpack')
-    .ReactLoadablePlugin;
+const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ora = require('ora');
 
@@ -30,41 +29,6 @@ webpack(
             libraryTarget: 'commonjs2'
         },
         target: 'node',
-        module: {
-            rules: [
-                {
-                    test: /\.jsx?$/,
-                    exclude: /node_modules/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: ['react', 'env', 'stage-2'],
-                            plugins: [
-                                [
-                                    'import',
-                                    {
-                                        libraryName: 'antd',
-                                        style: true
-                                    }
-                                ],
-                                ['react-loadable/babel'],
-                                ['transform-decorators-legacy'],
-                                ['syntax-dynamic-import'],
-                                [
-                                    'transform-runtime',
-                                    {
-                                        helpers: false,
-                                        polyfill: false,
-                                        regenerator: true,
-                                        moduleName: 'babel-runtime'
-                                    }
-                                ]
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
         plugins: [
             new CleanWebpackPlugin(['./*.js'], {
                 root: Dir(),

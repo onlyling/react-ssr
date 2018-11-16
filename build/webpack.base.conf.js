@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const jsxConfig = require('./jsx.config');
 
 const HTMLPlugin = new HtmlWebPackPlugin({
     template: './app/web/index.html',
@@ -10,22 +11,15 @@ const HTMLPlugin = new HtmlWebPackPlugin({
 const devMode = process.env.NODE_ENV !== 'production';
 const ssrMode = process.env.NODE_ENV === 'ssr';
 
-// const getLessLoader = (modules) => {
-//     let module = {
-//         importLoaders: 3
-//     };
-//     if (modules) {
-//         module.modules = true;
-//         module.localIdentName = '[name]_[local]_[hash:base64:5]';
-//     }
-
-// }
-
-const getLessLoader = (modules) => {
+/**
+ * Less 样式转换
+ * @param {Boolean} isCSSModules 是否使用 CSS Modules
+ */
+const getLessLoader = (isCSSModules) => {
     let module = {
-        importLoaders: 3
+        importLoaders: 2
     };
-    if (modules) {
+    if (isCSSModules) {
         module.modules = true;
         module.localIdentName = '[name]_[local]_[hash:base64:5]';
     }
@@ -39,9 +33,6 @@ const getLessLoader = (modules) => {
             options: {
                 plugins: [require('autoprefixer')('last 100 versions')]
             }
-        },
-        {
-            loader: 'resolve-url-loader'
         },
         {
             loader: 'less-loader',
@@ -72,6 +63,7 @@ module.exports = {
     },
     module: {
         rules: [
+            jsxConfig(devMode),
             {
                 test: /\.html$/,
                 use: [
