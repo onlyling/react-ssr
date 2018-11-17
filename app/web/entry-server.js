@@ -13,14 +13,14 @@ import AppRoutes from './app';
 import * as models from './models';
 import resetAxios from './axios-server';
 
-let Store = init({
-    models
-});
-
 class SSR {
     render(url, stats) {
         let modules = [];
         const context = {};
+        // 每次服务器端渲染，从新初始化一次，可能好一点
+        let Store = init({
+            models
+        });
         // 重置 axios 以替换当前用户
         Store.model({ name: 'Axios', state: resetAxios({}) });
 
