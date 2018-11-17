@@ -7,17 +7,30 @@ import Loadable from 'react-loadable';
 import { getBundles } from 'react-loadable/webpack';
 // import stats from '../build/react-loadable.json';
 
+import { Provider } from 'react-redux';
+import { init } from '@rematch/core';
 import AppRoutes from './app';
+import * as models from './models';
+import resetAxios from './axios-server';
+
+let Store = init({
+    models
+});
 
 class SSR {
     render(url, stats) {
         let modules = [];
         const context = {};
+        // 重置 axios 以替换当前用户
+        Store.model({ name: 'Axios', state: resetAxios({}) });
+
         const html = ReactDOMServer.renderToString(
             <Loadable.Capture report={(moduleName) => modules.push(moduleName)}>
-                <StaticRouter location={url} context={context}>
-                    <AppRoutes />
-                </StaticRouter>
+                <Provider store={Store}>
+                    <StaticRouter location={url} context={context}>
+                        <AppRoutes />
+                    </StaticRouter>
+                </Provider>
             </Loadable.Capture>
         );
         //获取服务端已经渲染好的组件数组
@@ -32,9 +45,7 @@ class SSR {
         return bundles
             .filter((bundle) => bundle.file.endsWith('.js'))
             .map((bundle) => {
-                return `<script type="text/javascript" src="${
-                    bundle.publicPath
-                }"></script>\n`;
+                return `<script type="text/javascript" src="${bundle.publicPath}"></script>\n`;
             });
     }
 
