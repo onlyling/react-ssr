@@ -1,21 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';
+import CnodeLayout from './layouts/cnode-layout/cnode-layout';
 import Routes from './routes';
+import './app.less';
 
 class Node extends React.Component {
     render() {
         return (
             <ScrollToTop>
-                <Link to="/home">home</Link>
-                &emsp;
-                <Link to="/list/index">list</Link>
-                &emsp;
-                <Link to="/error">404</Link>
-                &emsp;
-                <Link to="/admin/home">admin-home</Link>
-                <Routes />
+                <CnodeLayout>
+                    <Routes />
+                </CnodeLayout>
             </ScrollToTop>
         );
     }

@@ -7,6 +7,9 @@ const HTMLPlugin = new HtmlWebPackPlugin({
     template: './app/web/index.html',
     filename: './index.html'
 });
+const resolve = (dir) => {
+    return path.join(__dirname, '../app/web', dir);
+};
 
 const devMode = process.env.NODE_ENV !== 'production';
 const ssrMode = process.env.NODE_ENV === 'ssr';
@@ -59,7 +62,11 @@ module.exports = {
         app: path.join(__dirname, '../app/web/entry-client.js')
     },
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx'],
+        alias: {
+            '@components': resolve('components'),
+            '@layouts': resolve('layouts')
+        }
     },
     module: {
         rules: [

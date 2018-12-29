@@ -1,7 +1,7 @@
 /**
  * 接口最基本的接口路径
  */
-const BASE_URL = '/api';
+const BASE_URL = 'https://cnodejs.org/api/v1';
 
 /**
  * 获取 cookie
