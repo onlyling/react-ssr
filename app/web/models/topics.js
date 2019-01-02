@@ -1,44 +1,62 @@
 import { Map } from 'immutable';
 
+const CLASSIFY_MAP = {
+    all: '全部',
+    good: '精华',
+    share: '分享',
+    ask: '问答',
+    job: '招聘',
+    dev: '测试节点'
+};
+
 export default {
     state: Map({
-        Classify: [
-            {
-                value: 'all',
-                text: '全部'
-            },
-            {
-                value: 'good',
-                text: '精华'
-            },
-            {
-                value: 'share',
-                text: '分享'
-            },
-            {
-                value: 'job',
-                text: '招聘'
-            },
-            {
-                value: 'dev',
-                text: '测试节点'
-            }
-        ],
-        Pager: Map({})
+        Classify: Object.keys(CLASSIFY_MAP).map((key) => {
+            return {
+                text: CLASSIFY_MAP[key],
+                value: key
+            };
+        }),
+        ClassifyMap: CLASSIFY_MAP,
+        Pager: Map({}),
+        isFetching: false
     }),
     reducers: {
         UpdateUserInfo(state, payload) {
             return state.setIn(['UserInfo'], payload);
+        },
+        UpdateFetching(state, payload) {
+            return state.setIn(['isFetching'], payload);
+        },
+        UpdateTopicsPager(state, { tab = 'all', list = [] }) {
+            return state.setIn(['Pager', tab], list);
         }
     },
     effects: {
         // 检查当前用户是否登录
         async GetTopics(params, rootState) {
-            let data = await rootState.Axios.get('/topics', {
-                limit: 10,
-                page: params.page || 1,
-                tab: params.tab
+            const self = this;
+            const tab = params.tab;
+            self.UpdateTopicsPager({
+                tab: tab,
+                list: []
             });
+
+            self.UpdateFetching(true);
+            let data = await rootState.Axios.get('/topics', {
+                params: {
+                    limit: 20,
+                    page: params.page || 1,
+                    tab: tab
+                }
+            });
+            if (data.success) {
+                self.UpdateTopicsPager({
+                    tab: tab,
+                    list: data.data
+                });
+            }
+            self.UpdateFetching(false);
         }
     }
 };

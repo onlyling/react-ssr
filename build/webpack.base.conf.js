@@ -64,6 +64,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx'],
         alias: {
+            '@Utils': resolve('utils.js'),
             '@components': resolve('components'),
             '@layouts': resolve('layouts')
         }
