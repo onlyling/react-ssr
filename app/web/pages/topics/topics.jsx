@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import BaseList from '@components/base-list/base-list';
 import TopicsNav from '@components/topics-nav/topics-nav';
 import TopicsLayout from '@layouts/topics-layout/topics-layout';
 import TopicsList from '@components/topics-list/topics-list';
-import BaseList from '@components/base-list/base-list';
+import Paging from '@components/paging/paging';
 
 import Styles from './topics.less';
 
@@ -34,16 +35,17 @@ class Node extends BaseList {
     }
 
     $initPage = () => {
-        const { GetTopics } = this.props;
+        const self = this;
+        const { GetTopics } = self.props;
         GetTopics({
             tab: this.state.tab,
-            page: 1
+            page: +(self.$getQueryData('page') || 1)
         });
-        console.log(this.state);
+        // console.log(this.state);
     };
 
     componentDidMount = () => {
-        console.log('----');
+        this.$initQueryData();
         this.$initPage();
     };
 
@@ -51,10 +53,13 @@ class Node extends BaseList {
         const self = this;
         const { Pager, isFetching, ClassifyMap, Classify } = self.props;
         const { tab } = self.state;
+        const PagerData = self.$getPager();
+
         return (
             <TopicsLayout className={Styles['page']}>
                 <TopicsNav navs={Classify} />
                 <TopicsList list={Pager.get(tab)} loading={isFetching} ClassifyMap={ClassifyMap} />
+                <Paging {...PagerData} />
             </TopicsLayout>
         );
     }

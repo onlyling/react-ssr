@@ -16,14 +16,35 @@ class Node extends React.Component {
      * 后去通用的分页组件配置
      */
     $getPager = (data) => {
-        let self = this;
-        return getPager(data, (page) => {
-            if (page == 1) {
-                // 可能是洁癖在作祟
+        const self = this;
+        const page = +(self.$getQueryData('page') || 1);
+        const pathname = self.props.history.location.pathname;
+        const getNewParams = (page) => {
+            let p = Object.assign({}, self.$getQueryData());
+            if (page === 1) {
                 page = '';
             }
-            self.$putQueryData('pageNo', page);
-        });
+            p.page = page;
+            return p;
+        };
+
+        let pager = {
+            nextUrl: `${pathname}${parseObject2search(getNewParams(page + 1))}`
+        };
+
+        if (page > 1) {
+            pager.prevUrl = `${pathname}${parseObject2search(getNewParams(page - 1))}`;
+        }
+
+        return pager;
+
+        // return getPager(data, (page) => {
+        //     if (page == 1) {
+        //         // 可能是洁癖在作祟
+        //         page = '';
+        //     }
+        //     self.$putQueryData('pageNo', page);
+        // });
     };
 
     /**
@@ -77,7 +98,7 @@ class Node extends React.Component {
     componentDidUpdate(prevProps) {
         if (
             this.props.location.search !== prevProps.location.search ||
-            this.props.match.url !== prevProps.match.url
+            this.props.history.location.pathname !== prevProps.history.location.pathname
         ) {
             if (!this.$isAction) {
                 // 不是函数操作，更新
