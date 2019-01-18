@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import BaseList from '@components/base-list/base-list';
 import TopicsNav from '@components/topics-nav/topics-nav';
-import TopicsLayout from '@layouts/topics-layout/topics-layout';
 import TopicsList from '@components/topics-list/topics-list';
 import Paging from '@components/paging/paging';
 
-import Styles from './topics.less';
+// import Styles from './topics.less';
 
 @connect(
     ({ Topics }) => ({
@@ -26,7 +25,13 @@ class Node extends BaseList {
         this.state = {
             tab: ''
         };
+
+        this.$initQueryData();
     }
+
+    componentDidMount = async () => {
+        await this.$initPage();
+    };
 
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
@@ -34,19 +39,18 @@ class Node extends BaseList {
         };
     }
 
-    $initPage = () => {
+    fetchData = async () => {
+        console.log('-- fetchData --');
         const self = this;
         const { GetTopics } = self.props;
-        GetTopics({
+        await GetTopics({
             tab: this.state.tab,
             page: +(self.$getQueryData('page') || 1)
         });
-        // console.log(this.state);
     };
 
-    componentDidMount = () => {
-        this.$initQueryData();
-        this.$initPage();
+    $initPage = () => {
+        this.fetchData();
     };
 
     render() {
@@ -56,11 +60,11 @@ class Node extends BaseList {
         const PagerData = self.$getPager();
 
         return (
-            <TopicsLayout className={Styles['page']}>
+            <Fragment>
                 <TopicsNav navs={Classify} />
                 <TopicsList list={Pager.get(tab)} loading={isFetching} ClassifyMap={ClassifyMap} />
                 <Paging {...PagerData} />
-            </TopicsLayout>
+            </Fragment>
         );
     }
 }

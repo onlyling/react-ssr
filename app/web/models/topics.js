@@ -19,7 +19,8 @@ export default {
         }),
         ClassifyMap: CLASSIFY_MAP,
         Pager: Map({}),
-        isFetching: false
+        isFetching: false,
+        CurTopic: {}
     }),
     reducers: {
         UpdateUserInfo(state, payload) {
@@ -30,6 +31,9 @@ export default {
         },
         UpdateTopicsPager(state, { tab = 'all', list = [] }) {
             return state.setIn(['Pager', tab], list);
+        },
+        UpdateCurTopic(state, payload) {
+            return state.setIn(['CurTopic'], payload);
         }
     },
     effects: {
@@ -57,6 +61,14 @@ export default {
                 });
             }
             self.UpdateFetching(false);
+        },
+        async GetTopic(topicId, rootState) {
+            this.UpdateCurTopic({});
+
+            let data = await rootState.Axios.get(`/topic/${topicId}`);
+            if (data.success) {
+                this.UpdateCurTopic(data.data);
+            }
         }
     }
 };

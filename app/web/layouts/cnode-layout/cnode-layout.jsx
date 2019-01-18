@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import CnodeTopHeader from '@components/cnode-top-header/cnode-top-header';
 
@@ -14,10 +14,10 @@ const HeaderNavs = []
 class Node extends React.Component {
     render() {
         return (
-            <div>
+            <Fragment>
                 <CnodeTopHeader navs={HeaderNavs} />
                 {this.props.children}
-            </div>
+            </Fragment>
         );
     }
 }

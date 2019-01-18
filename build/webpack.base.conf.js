@@ -12,7 +12,7 @@ const resolve = (dir) => {
 };
 
 const devMode = process.env.NODE_ENV !== 'production';
-const ssrMode = process.env.NODE_ENV === 'ssr';
+const ssrMode = process.env.NODE_ENV_SSR === 'SSR';
 
 /**
  * Less 样式转换

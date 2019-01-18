@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "fe-dev": "node build/server-dev.js",
         "build": "cross-env NODE_ENV=production node build/webpack.build.conf.js",
-        "ssr": "cross-env NODE_ENV=ssr node build/webpack.ssr.conf.js",
+        "ssr": "cross-env NODE_ENV=production cross-env NODE_ENV_SSR=SSR node build/webpack.ssr.conf.js",
         "http": "node http.js"
     },
     "repository": {
@@ -30,8 +30,8 @@
         "@babel/plugin-transform-runtime": "^7.2.0",
         "@babel/preset-env": "^7.2.3",
         "@babel/preset-react": "^7.0.0",
-        "autoprefixer": "^9.4.3",
-        "babel-loader": "^8.0.4",
+        "autoprefixer": "^9.4.5",
+        "babel-loader": "^8.0.5",
         "babel-plugin-import": "^1.11.0",
         "clean-webpack-plugin": "^0.1.19",
         "cross-env": "^5.2.0",
@@ -50,22 +50,23 @@
         "style-loader": "^0.21.0",
         "uglifyjs-webpack-plugin": "^1.3.0",
         "url-loader": "^1.1.2",
-        "webpack": "^4.28.2",
+        "webpack": "^4.28.4",
         "webpack-assets-manifest": "^3.1.1",
         "webpack-dev-server": "^3.1.14",
-        "webpack-merge": "^4.1.5"
+        "webpack-merge": "^4.2.1"
     },
     "dependencies": {
         "@babel/runtime-corejs2": "^7.2.0",
         "@rematch/core": "^1.0.6",
-        "antd": "^3.11.6",
+        "antd": "^3.12.3",
         "axios": "^0.18.0",
         "immutable": "^3.8.2",
         "react": "^16.7.0",
         "react-dom": "^16.7.0",
         "react-loadable": "^5.5.0",
         "react-redux": "^5.1.1",
-        "react-router-dom": "^4.3.1",
+        "react-router-config": "^4.4.0-beta.6",
+        "react-router-dom": "^4.4.0-beta.6",
         "redux": "^4.0.1"
     },
     "port": 9091,

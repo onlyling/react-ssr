@@ -98,7 +98,7 @@ class Node extends React.Component {
     componentDidUpdate(prevProps) {
         if (
             this.props.location.search !== prevProps.location.search ||
-            this.props.history.location.pathname !== prevProps.history.location.pathname
+            this.props.match.url !== prevProps.match.url
         ) {
             if (!this.$isAction) {
                 // 不是函数操作，更新

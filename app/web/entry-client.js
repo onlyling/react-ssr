@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import Loadable from 'react-loadable';
 import { init } from '@rematch/core';
 import { Provider } from 'react-redux';
 import { LocaleProvider } from 'antd';
@@ -32,8 +33,12 @@ class Node extends React.Component {
     }
 }
 
-ReactDOM.render(<Node />, document.getElementById('root'));
+const RootELe = document.getElementById('root');
 
-if (module.hot) {
-    module.hot.accept();
+if (RootELe.innerHTML) {
+    Loadable.preloadReady().then(() => {
+        ReactDOM.hydrate(<Node />, RootELe);
+    });
+} else {
+    ReactDOM.render(<Node />, RootELe);
 }

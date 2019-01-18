@@ -1,9 +1,12 @@
 import React from 'react';
+import { hot } from 'react-hot-loader/root';
 
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';
 import CnodeLayout from './layouts/cnode-layout/cnode-layout';
-import Routes from './routes';
+import Routes, { routes } from './routes';
 import './app.less';
+
+export { routes };
 
 class Node extends React.Component {
     render() {
@@ -15,6 +18,10 @@ class Node extends React.Component {
             </ScrollToTop>
         );
     }
+}
+
+if (process.env.NODE_ENV !== 'production') {
+    Node = hot(Node);
 }
 
 export default Node;

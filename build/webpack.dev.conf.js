@@ -8,7 +8,6 @@ module.exports = merge(baseWebpackConfig, {
     mode: 'development',
     entry: {
         app: [
-            'react-hot-loader/patch',
             `webpack-dev-server/client?http://localhost:${conf.port}`,
             'webpack/hot/only-dev-server',
             path.join(__dirname, '../app/web/entry-client.js')
