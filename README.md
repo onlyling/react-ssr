@@ -44,16 +44,6 @@ antd 与 css-module 冲突了，写了两个解析规则，互相屏蔽才搞�
 
 看了 `react-loadable` 的源码，它只是做了等待的操作，当异步模块加载好后直接返回的是一个 React 组件。在 HTTP 应用启动前，已经预加载好所有异步模块了，通过日志也能看出来模块都加在好了。
 
-> 这个问题算是解决了，通过 `[react-tree-walker](https://github.com/ctrlplusb/react-tree-walker)` 遍历 React 的节点，等待请求结束后才渲染。同时，暴露了一个新的问题，第一次刷新能看到正确的状态，没刷新一次，服务器端就会多出现一次请求，很无解。
-
-### proxy
-
-最开始是直接通过 axios 请求 cnode 的服务器，有一个与请求，然后才导向真实请求。
-
-开发环境加入了 proxy，因为是 HTTPS 环境，所以需要加 `"secure": false`。
-
-> 在服务器端添加代理的时候，由于关键字段值是 `/api/v1`,在获取它的值的时候，不能直接通过 `.` 的方式，需要用下标的方式。
-
 ```bash
 --- routes ---
 --- Topic ---
@@ -82,6 +72,16 @@ const promises = matchRoutes(routes, url).map(({ route, match }) => {
   preload: [Function],
   contextTypes: { loadable: { [Function: t] isRequired: [Circular] } } }
 ```
+
+> 这个问题算是解决了，通过 `[react-tree-walker](https://github.com/ctrlplusb/react-tree-walker)` 遍历 React 的节点，等待请求结束后才渲染。同时，暴露了一个新的问题，第一次刷新能看到正确的状态，没刷新一次，服务器端就会多出现一次请求，很无解。剩下就是如何避免浏览器第一次打开页面不再发起异步请求。
+
+### proxy
+
+最开始是直接通过 axios 请求 cnode 的服务器，有一个与请求，然后才导向真实请求。
+
+开发环境加入了 proxy，因为是 HTTPS 环境，所以需要加 `"secure": false`。
+
+> 在服务器端添加代理的时候，由于关键字段值是 `/api/v1`,在获取它的值的时候，不能直接通过 `.` 的方式，需要用下标的方式。
 
 
 ## 参考资料
