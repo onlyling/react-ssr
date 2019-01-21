@@ -1,7 +1,8 @@
 /**
  * 接口最基本的接口路径
  */
-const BASE_URL = 'https://cnodejs.org/api/v1';
+// const BASE_URL = 'https://cnodejs.org/api/v1';
+export const BASE_URL = '/api/v1';
 
 /**
  * 获取 cookie
@@ -39,7 +40,13 @@ export const setAxios = (axios, headers = {}) => {
 
     axios.interceptors.response.use(
         (response) => {
-            return Promise.resolve(response.data);
+            if (response) {
+                return Promise.resolve(response.data);
+            } else {
+                return Promise.resolve({
+                    data: {}
+                });
+            }
         },
         (error) => {
             return Promise.resolve({

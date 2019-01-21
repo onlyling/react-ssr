@@ -41,12 +41,12 @@ export default {
         async GetTopics(params, rootState) {
             const self = this;
             const tab = params.tab;
-            self.UpdateTopicsPager({
-                tab: tab,
-                list: []
-            });
 
             self.UpdateFetching(true);
+            self.UpdateTopicsPager({
+                tab: tab
+            });
+
             let data = await rootState.Axios.get('/topics', {
                 params: {
                     limit: 20,
@@ -63,8 +63,6 @@ export default {
             self.UpdateFetching(false);
         },
         async GetTopic(topicId, rootState) {
-            this.UpdateCurTopic({});
-
             let data = await rootState.Axios.get(`/topic/${topicId}`);
             if (data.success) {
                 this.UpdateCurTopic(data.data);

@@ -39,6 +39,7 @@
         "file-loader": "^2.0.0",
         "html-loader": "^0.5.5",
         "html-webpack-plugin": "^3.2.0",
+        "http-proxy-middleware": "^0.19.1",
         "isomorphic-style-loader": "^4.0.0",
         "less": "^3.9.0",
         "less-loader": "^4.1.0",
@@ -67,12 +68,14 @@
         "react-redux": "^5.1.1",
         "react-router-config": "^4.4.0-beta.6",
         "react-router-dom": "^4.4.0-beta.6",
+        "react-tree-walker": "^4.3.0",
         "redux": "^4.0.1"
     },
     "port": 9091,
     "proxy": {
-        "/api/": {
-            "target": "http://127.0.0.1:3333"
+        "/api/v1": {
+            "target": "https://cnodejs.org",
+            "secure": false
         }
     }
 }

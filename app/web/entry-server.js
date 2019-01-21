@@ -3,7 +3,7 @@ import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import ReactDOMServer from 'react-dom/server';
 import Loadable from 'react-loadable';
-import { matchRoutes } from 'react-router-config';
+import reactTreeWalker from 'react-tree-walker';
 //下面这个是需要让react-loadable在服务端可运行需要的，下面会讲到
 import { getBundles } from 'react-loadable/webpack';
 // import stats from '../build/react-loadable.json';
@@ -13,6 +13,20 @@ import { init } from '@rematch/core';
 import App, { routes } from './app';
 import * as models from './models';
 import resetAxios from './axios-server';
+
+const asyncFetchData = async (App) => {
+    let promises = [];
+
+    const visitor = (element, instance) => {
+        if (instance && typeof instance.fetchData === 'function') {
+            promises.push(instance.fetchData());
+        }
+    };
+
+    await reactTreeWalker(App, visitor);
+
+    return Promise.all(promises);
+};
 
 class SSR {
     async render(url, stats) {
@@ -25,21 +39,7 @@ class SSR {
         // 重置 axios 以替换当前用户
         Store.model({ name: 'Axios', state: resetAxios({}) });
 
-        const promises = matchRoutes(routes, url).map(({ route, match }) => {
-            if (match.isExact) {
-                console.log('------');
-                console.log(route.component);
-                console.log('------');
-            }
-            if (match.isExact && route.component.fetchData) {
-                return route.component.fetchData();
-            }
-            return Promise.resolve();
-        });
-
-        await Promise.all(promises);
-
-        const html = ReactDOMServer.renderToString(
+        const AppRoot = (
             <Loadable.Capture report={(moduleName) => modules.push(moduleName)}>
                 <Provider store={Store}>
                     <StaticRouter location={url} context={context}>
@@ -48,6 +48,17 @@ class SSR {
                 </Provider>
             </Loadable.Capture>
         );
+
+        if (context.url) {
+            // 如果需要重定向
+            return {
+                context
+            };
+        }
+
+        await asyncFetchData(AppRoot);
+
+        const html = ReactDOMServer.renderToString(AppRoot);
 
         //获取服务端已经渲染好的组件数组
         let bundles = getBundles(stats, modules);
