@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "fe-dev": "node build/server-dev.js",
+        "c-dev": "node build/server-dev.js",
         "build": "cross-env NODE_ENV=production node build/webpack.build.conf.js",
         "ssr": "cross-env NODE_ENV=production cross-env NODE_ENV_SSR=SSR node build/webpack.ssr.conf.js",
         "http": "node http.js"
