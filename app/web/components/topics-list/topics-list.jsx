@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Styles from './topics-list.less';
+import Styles from './topics-list.module.less';
 
 /**
  * 获取最后回复的时间

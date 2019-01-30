@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Styles from './topics-nav.less';
+import Styles from './topics-nav.module.less';
 
 export default (props) => {
     const Navs = props.navs.map((n) => {

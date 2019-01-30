@@ -1,13 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ora = require('ora');
 
 const baseWebpackConfig = require('./webpack.base.conf');
 
 const spinner = ora('building for SSR...\n');
+
 spinner.start();
 
 const Dir = (p = '') => {
@@ -33,9 +33,6 @@ webpack(
             new CleanWebpackPlugin(['./*.js'], {
                 root: Dir(),
                 verbose: true
-            }),
-            new ReactLoadablePlugin({
-                filename: Dir('/react-loadable.json')
             })
         ]
     }),

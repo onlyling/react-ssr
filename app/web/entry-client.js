@@ -4,9 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { init } from '@rematch/core';
 import { Provider } from 'react-redux';
-import { LocaleProvider } from 'antd';
-import zh_CN from 'antd/lib/locale-provider/zh_CN';
-import 'moment/locale/zh-cn';
 
 import App from './app';
 import * as models from './models';
@@ -30,11 +27,9 @@ class Node extends React.Component {
     render() {
         return (
             <Router>
-                <LocaleProvider locale={zh_CN}>
-                    <Provider store={Store}>
-                        <App />
-                    </Provider>
-                </LocaleProvider>
+                <Provider store={Store}>
+                    <App />
+                </Provider>
             </Router>
         );
     }

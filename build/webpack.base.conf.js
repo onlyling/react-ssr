@@ -1,18 +1,18 @@
-const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const jsxConfig = require('./jsx.config');
+const { shouldUseRelativeAssetPaths, resolveSrcPath } = require('./config');
 
 const HTMLPlugin = new HtmlWebPackPlugin({
-    template: './app/web/index.html',
+    template: resolveSrcPath('index.html'),
     filename: './index.html'
 });
-const resolve = (dir) => {
-    return path.join(__dirname, '../app/web', dir);
-};
 
 const devMode = process.env.NODE_ENV !== 'production';
 const ssrMode = process.env.NODE_ENV_SSR === 'SSR';
+
+const lessRegex = /\.less$/;
+const lessModuleRegex = /\.module\.less$/;
 
 /**
  * Less 样式转换
@@ -49,7 +49,14 @@ const getLessLoader = (isCSSModules) => {
     if (ssrMode) {
         loaders.unshift('isomorphic-style-loader');
     } else {
-        loaders.unshift(devMode ? 'style-loader' : MiniCssExtractPlugin.loader);
+        loaders.unshift(
+            devMode
+                ? 'style-loader'
+                : {
+                      loader: MiniCssExtractPlugin.loader,
+                      options: shouldUseRelativeAssetPaths ? { publicPath: '../../' } : undefined
+                  }
+        );
     }
 
     return loaders;
@@ -58,15 +65,12 @@ const getLessLoader = (isCSSModules) => {
 const plugins = ssrMode ? [] : [HTMLPlugin];
 
 module.exports = {
-    entry: {
-        app: path.join(__dirname, '../app/web/entry-client.js')
-    },
     resolve: {
         extensions: ['.js', '.jsx'],
         alias: {
-            '@Utils': resolve('utils.js'),
-            '@components': resolve('components'),
-            '@layouts': resolve('layouts')
+            '@Utils': resolveSrcPath('utils.js'),
+            '@components': resolveSrcPath('components'),
+            '@layouts': resolveSrcPath('layouts')
         }
     },
     module: {
@@ -82,22 +86,23 @@ module.exports = {
                 ]
             },
             {
-                test: /\.less$/,
-                exclude: [/app\/web/],
+                test: lessRegex,
+                exclude: lessModuleRegex,
                 use: getLessLoader(false)
             },
             {
-                test: /\.less$/,
-                exclude: [/node_modules/],
+                test: lessModuleRegex,
+                exclude: /[\\/]node_modules[\\/]/,
                 use: getLessLoader(true)
             },
             {
-                test: /\.(png|jpg|gif)$/,
+                test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
                 use: [
                     {
                         loader: 'url-loader',
                         options: {
-                            limit: 8192
+                            limit: 8192,
+                            name: 'static/media/[name].[hash:8].[ext]'
                         }
                     }
                 ]

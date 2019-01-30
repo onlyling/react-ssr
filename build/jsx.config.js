@@ -6,7 +6,7 @@ module.exports = (isDev) => {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-            loader: 'babel-loader',
+            loader: 'babel-loader?cacheDirectory',
             options: {
                 presets: [
                     [
@@ -30,6 +30,7 @@ module.exports = (isDev) => {
                             style: true
                         }
                     ],
+                    ['lodash'],
                     ['@babel/plugin-syntax-dynamic-import'],
                     [
                         '@babel/plugin-proposal-decorators',
