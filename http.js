@@ -12,6 +12,7 @@ const packageJson = require('./package.json');
 const s = new SSR();
 
 app.use('/public', express.static(path.join(__dirname, 'app/public')));
+
 if (packageJson.proxy) {
     Object.keys(packageJson.proxy).forEach((key) => {
         app.use(key, proxy(packageJson.proxy[key]));
@@ -26,7 +27,11 @@ app.get('*', async (req, res) => {
         return res.redirect(rendered.context.url);
     }
 
-    const extra = `<div id="root">${rendered.html}</div>${rendered.scripts.join('')}`;
+    const extra = [
+        `<div id="root">${rendered.html}</div>`,
+        `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(rendered.initialState)}</script>`,
+        rendered.scripts.join('')
+    ].join('');
     const html = HTML_INDEX.replace('<div id=root></div>', extra);
     res.send(html);
 });
@@ -34,7 +39,7 @@ app.get('*', async (req, res) => {
 //preload all components on server side, 服务端没有动态加载各个组件，提前先加载好
 SSR.preloadAll()
     .then(() => {
-        console.log('=== ??? ===');
+        console.log('=== SSR.preloadAll ===');
         app.listen(3000, () => {
             console.log('Running on http://localhost:3000/');
         });

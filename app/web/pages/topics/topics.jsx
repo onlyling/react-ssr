@@ -10,10 +10,10 @@ import Paging from '@components/paging/paging';
 
 @connect(
     ({ Topics }) => ({
-        Classify: Topics.get('Classify'),
-        ClassifyMap: Topics.get('ClassifyMap'),
-        Pager: Topics.get('Pager'),
-        isFetching: Topics.get('isFetching')
+        Classify: Topics.Classify,
+        ClassifyMap: Topics.ClassifyMap,
+        Pager: Topics.Pager,
+        isFetching: Topics.isFetching
     }),
     ({ Topics }) => ({
         GetTopics: Topics.GetTopics
@@ -40,7 +40,6 @@ class Node extends BaseList {
     }
 
     fetchData = async () => {
-        console.log('-- fetchData --');
         const self = this;
         const { GetTopics } = self.props;
         await GetTopics({
@@ -62,7 +61,7 @@ class Node extends BaseList {
         return (
             <Fragment>
                 <TopicsNav navs={Classify} />
-                <TopicsList list={Pager.get(tab)} loading={isFetching} ClassifyMap={ClassifyMap} />
+                <TopicsList list={Pager[tab]} loading={isFetching} ClassifyMap={ClassifyMap} />
                 <Paging {...PagerData} />
             </Fragment>
         );

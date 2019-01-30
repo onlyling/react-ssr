@@ -5,7 +5,7 @@ import Styles from './topic.less';
 
 @connect(
     ({ Topics }) => ({
-        CurTopic: Topics.get('CurTopic')
+        CurTopic: Topics.CurTopic
     }),
     ({ Topics }) => ({
         GetTopic: Topics.GetTopic

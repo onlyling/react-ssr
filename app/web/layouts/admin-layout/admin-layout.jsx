@@ -7,7 +7,7 @@ const { Sider, Content } = Layout;
 
 @connect(
     ({ User }) => ({
-        UserInfo: User.get('UserInfo')
+        UserInfo: User.UserInfo
     }),
     () => ({})
 )
@@ -15,7 +15,7 @@ class Node extends React.Component {
     render() {
         let { UserInfo } = this.props;
 
-        if (UserInfo.get('user_name')) {
+        if (UserInfo['user_name']) {
             return (
                 <Layout>
                     <Sider>Sider</Sider>

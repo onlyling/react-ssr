@@ -1,12 +1,12 @@
-import { Map } from 'immutable';
-
 export default {
-    state: Map({
-        UserInfo: Map({})
-    }),
+    state: {
+        UserInfo: {}
+    },
     reducers: {
         UpdateUserInfo(state, payload) {
-            return state.setIn(['UserInfo'], payload);
+            return Object.assign({}, state, {
+                UserInfo: payload
+            });
         }
     },
     effects: {
@@ -16,14 +16,14 @@ export default {
             if (data.success) {
                 this.UpdateUserInfo(rootState.User.get('UserInfo'));
             } else {
-                this.UpdateUserInfo(Map({}));
+                this.UpdateUserInfo({});
             }
         },
         // 用户登录
         async PostLogin(params, rootState) {
             let data = await rootState.Axios.post('/login', params);
             if (data.success) {
-                this.UpdateUserInfo(Map(data.data));
+                this.UpdateUserInfo(data.data);
             }
             return data;
         }

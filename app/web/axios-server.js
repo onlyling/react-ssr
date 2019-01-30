@@ -5,14 +5,22 @@ import axios from 'axios';
 import { BASE_URL } from './utils';
 
 export default (headers) => {
-    axios.defaults.headers = headers || {};
-    axios.defaults.baseURL = `http://localhost:3000${BASE_URL}`;
+    const instance = axios.create({
+        baseURL: `http://localhost:3000${BASE_URL}`,
+        headers
+    });
 
-    axios.interceptors.response.use(
+    instance.interceptors.request.use((config) => ({
+        ...config,
+        data: {
+            // 此处注意，你的`data`应该是个对象，不能是其他数据类型
+            ...(config.data || {}),
+            _: +new Date()
+        }
+    }));
+
+    instance.interceptors.response.use(
         (response) => {
-            console.log('-- response --');
-            console.log(JSON.stringify(response.data));
-            console.log('-- response --');
             if (response && response.data) {
                 return Promise.resolve(response.data);
             } else {
@@ -30,5 +38,5 @@ export default (headers) => {
         }
     );
 
-    return axios;
+    return instance;
 };

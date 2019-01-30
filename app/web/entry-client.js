@@ -12,8 +12,15 @@ import App from './app';
 import * as models from './models';
 import Axios from './axios-client';
 
+const preloadedState = window.__PRELOADED_STATE__;
+
 let Store = init({
-    models
+    models,
+    redux: preloadedState
+        ? {
+              initialState: preloadedState
+          }
+        : {}
 });
 
 // 添加 Axios 到 redux

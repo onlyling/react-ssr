@@ -1,5 +1,3 @@
-import { Map } from 'immutable';
-
 const CLASSIFY_MAP = {
     all: '全部',
     good: '精华',
@@ -10,7 +8,7 @@ const CLASSIFY_MAP = {
 };
 
 export default {
-    state: Map({
+    state: {
         Classify: Object.keys(CLASSIFY_MAP).map((key) => {
             return {
                 text: CLASSIFY_MAP[key],
@@ -18,22 +16,28 @@ export default {
             };
         }),
         ClassifyMap: CLASSIFY_MAP,
-        Pager: Map({}),
+        Pager: {},
         isFetching: false,
         CurTopic: {}
-    }),
+    },
     reducers: {
-        UpdateUserInfo(state, payload) {
-            return state.setIn(['UserInfo'], payload);
-        },
         UpdateFetching(state, payload) {
-            return state.setIn(['isFetching'], payload);
+            return Object.assign({}, state, {
+                isFetching: payload
+            });
         },
         UpdateTopicsPager(state, { tab = 'all', list = [] }) {
-            return state.setIn(['Pager', tab], list);
+            return Object.assign({}, state, {
+                Pager: {
+                    ...state.Pager,
+                    [tab]: list
+                }
+            });
         },
         UpdateCurTopic(state, payload) {
-            return state.setIn(['CurTopic'], payload);
+            return Object.assign({}, state, {
+                CurTopic: payload
+            });
         }
     },
     effects: {
@@ -49,7 +53,7 @@ export default {
 
             let data = await rootState.Axios.get('/topics', {
                 params: {
-                    limit: 20,
+                    limit: 2,
                     page: params.page || 1,
                     tab: tab
                 }

@@ -6,7 +6,6 @@ import Loadable from 'react-loadable';
 import reactTreeWalker from 'react-tree-walker';
 //下面这个是需要让react-loadable在服务端可运行需要的，下面会讲到
 import { getBundles } from 'react-loadable/webpack';
-// import stats from '../build/react-loadable.json';
 
 import { Provider } from 'react-redux';
 import { init } from '@rematch/core';
@@ -62,10 +61,12 @@ class SSR {
 
         //获取服务端已经渲染好的组件数组
         let bundles = getBundles(stats, modules);
+
         return {
             context,
             html,
-            scripts: this.generateBundleScripts(bundles)
+            scripts: this.generateBundleScripts(bundles),
+            initialState: Store.getState()
         };
     }
     //把SSR过的组件都转成script标签扔到html里
