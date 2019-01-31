@@ -36,6 +36,8 @@ antd 与 css-module 冲突了，写了两个解析规则，互相屏蔽才搞�
 
 把 `axios` 放入 `redux` 中，可以在服务端注入 `cookie`。客户端的 `cookie` 直接从浏览器里获取，但是服务器端，需要从 http request 的 header 上获取，并且每次请求都要重新覆盖，所以有两个 `axios` 的入口。
 
+浏览器端 `./app/web/axios-client.js` 里面，是直接把整个 `axios` 暴露出去，没问题，如果在服务器端，会出现下面那个第二次以后，请求变成多次。在 `./app/web/axios-server.js` 里面每次都是创建一个实例。
+
 ### 服务器端渲染
 
 服务端需提前拉取数据，客户端则在 `componentDidMount` 调用平台上的差异，服务端渲染只会执行到 `compnentWillMount` 上，所以为了达到同构的目的，可以把拉取数据的逻辑写到 React Class 的静态方法上，一方面服务端上可以通过直接操作静态方法来提前拉取数据再根据数据生成 HTML，另一方面客户端可以在 `componentDidMount` 时去调用该静态方法拉取数据。
